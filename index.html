@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novels NG - Read & Earn Money Daily</title>
+<style>
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Arial;}
+body{background:#e8f5e9;}
+.header{background:linear-gradient(135deg, #4caf50, #2e7d32); color:white; padding:20px; text-align:center;}
+.balance-box{background:white; margin:-20px 15px 15px; padding:20px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;}
+.balance{font-size:32px; color:#2e7d32; font-weight:bold;}
+.box{background:white; margin:15px; padding:15px; border-radius:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.task{display:flex; justify-content:space-between; align-items:center; padding:12px; background:#f1f8e9; margin:10px 0; border-radius:10px; border-left:4px solid #4caf50;}
+.btn{background:#4caf50; color:white; padding:10px 20px; border:none; border-radius:20px; font-weight:bold; cursor:pointer; text-decoration:none;}
+.btn:disabled{background:#ccc;}
+.withdraw-box input{width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:8px;}
+.footer{text-align:center; padding:20px; font-size:12px; color:#666;}
+</style>
+</head>
+<body>
+
+<div id="login">
+<div class="header"><h2>📚 NOVELS NG</h2><p>Read Stories & Earn Real Money</p></div>
+<div class="box">
+<input type="text" id="username" placeholder="Enter Username" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
+<button class="btn" style="width:100%; margin-top:10px;" onclick="login()">LOGIN / REGISTER</button>
+</div>
+</div>
+
+<div id="app" style="display:none;">
+<div class="header">
+<h2>Welcome, <span id="userName"></span> 📖</h2>
+</div>
+
+<div class="balance-box">
+<p>Your Earnings</p>
+<div class="balance">₦<span id="balance">0.00</span></div>
+</div>
+
+<div class="box">
+<h3>🎯 Daily Tasks</h3>
+
+<div class="task">
+<div>
+<p><b>Daily Check-in</b></p>
+<p style="color:green; font-size:12px;">Read Quote & Earn ₦10</p>
+</div>
+<button class="btn" id="dailyBtn" onclick="dailyTask()">CLAIM</button>
+</div>
+
+<div class="task">
+<div>
+<p><b>Read Sponsored Novel</b></p>
+<p style="color:green; font-size:12px;">Earn ₦10</p>
+</div>
+<a href="https://www.effectivecpmnetwork.com/fgsu8uz4?key=b29b8257cda1793a2dffedf8fea2b14d" target="_blank" class="btn" onclick="setTimeout(()=>addMoney(10), 3000)">READ NOW</a>
+</div>
+
+<div class="task">
+<div>
+<p><b>View Ad Banner</b></p>
+<p style="color:green; font-size:12px;">Earn ₦10</p>
+</div>
+<button class="btn" onclick="setTimeout(()=>addMoney(10), 3000)">VIEW AD</button>
+</div>
+
+</div>
+
+<div class="box">
+<h3>📢 Today's Book Sponsor</h3>
+<!-- ADSTERRA BANNER 300x250 -->
+<center>
+<script>
+  atOptions = {
+    'key' : '6d57473a29323615f8e72ab9c75bb3f8',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="//www.highperformanceformat.com/6d57473a29323615f8e72ab9c75bb3f8/invoke.js"></script>
+</center>
+</div>
+
+<div class="box withdraw-box">
+<h3>💰 Withdraw Earnings</h3>
+<p>Minimum: ₦10,000 - Bank Transfer</p>
+<input type="text" id="bank" placeholder="Bank Name e.g GTBank">
+<input type="text" id="acc" placeholder="Account Number">
+<input type="text" id="name" placeholder="Account Name">
+<button class="btn" style="width:100%;" onclick="withdraw()">REQUEST WITHDRAWAL</button>
+<p id="msg" style="color:green; margin-top:10px;"></p>
+</div>
+
+<button class="btn" style="width:90%; margin:15px; background:#d32f2f;" onclick="logout()">LOGOUT</button>
+
+<div class="footer">© 2026 Novels NG - Read More, Earn More</div>
+</div>
+
+<!-- ADSTERRA SOCIAL BAR -->
+<script src="https://pl30593718.effectivecpmnetwork.com/ea/fd/41/eafd41614812e3258c5965d7ef79ccb0.js"></script>
+
+<!-- ADSTERRA POPUNDER -->
+<script src="https://pl30593716.effectivecpmnetwork.com/14/57/d5/1457d57e16c41e8116eab8647b03cef5.js"></script>
+
+<script>
+// SYSTEM
+let user = localStorage.getItem('novelUser');
+let bal = parseFloat(localStorage.getItem('novelBal')) || 0.00;
+let lastDaily = localStorage.getItem('novelDaily');
+
+if(user){showApp();}
+
+function login(){
+  let u = document.getElementById('username').value;
+  if(u==''){alert('Enter username'); return;}
+  localStorage.setItem('novelUser', u);
+  showApp();
+}
+
+function showApp(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('userName').innerText = localStorage.getItem('novelUser');
+  updateBal();
+  checkDaily();
+}
+
+function addMoney(amount){
+  bal += amount;
+  localStorage.setItem('novelBal', bal);
+  updateBal();
+  alert('₦'+amount+'.00 Added! New Balance: ₦'+bal.toFixed(2));
+}
+
+function dailyTask(){
+  let today = new Date().toDateString();
+  if(lastDaily == today){alert('You already claimed today. Come back tomorrow!'); return;}
+  bal += 10;
+  localStorage.setItem('novelBal', bal);
+  localStorage.setItem('novelDaily', today);
+  updateBal();
+  checkDaily();
+  alert('₦10.00 Claimed for reading today!');
+}
+
+function checkDaily(){
+  let today = new Date().toDateString();
+  if(localStorage.getItem('novelDaily') == today){
+    document.getElementById('dailyBtn').disabled = true;
+    document.getElementById('dailyBtn').innerText = 'DONE';
+  }
+}
+
+function updateBal(){
+  document.getElementById('balance').innerText = bal.toFixed(2);
+}
+
+function withdraw(){
+  if(bal < 10000){alert('Minimum withdrawal is ₦10,000. Your balance: ₦'+bal.toFixed(2)); return;}
+  let b = document.getElementById('bank').value;
+  let a = document.getElementById('acc').value;
+  let n = document.getElementById('name').value;
+  if(b==''||a==''||n==''){alert('Fill all bank details'); return;}
+  document.getElementById('msg').innerText = 'Withdrawal request for ₦'+bal.toFixed(2)+' sent! Admin go pay you in 24-48hrs';
+  bal = 0;
+  localStorage.setItem('novelBal', bal);
+  updateBal();
+}
+
+function logout(){
+  localStorage.clear();
+  location.reload();
+}
+</script>
+
+</body>
+</html>
