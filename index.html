@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novels NG - Earn & Read</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+body {background:#0f172a;color:#e2e8f0;padding-bottom:70px;}
+.container {max-width:500px;margin:0 auto;background:#1e293b;min-height:100vh;}
+.header {background:linear-gradient(135deg,#8b5cf6,#ec4899);padding:20px;text-align:center;color:white;}
+.header h1 {font-size:24px;margin-bottom:5px;}
+.balance-card {background:#334155;margin:15px;border-radius:12px;padding:15px;}
+.balance {font-size:28px;font-weight:bold;color:#22c55e;}
+.nav {display:flex;background:#1e293b;position:fixed;bottom:0;width:100%;max-width:500px;border-top:1px solid #334155;}
+.nav-btn {flex:1;padding:12px;text-align:center;font-size:12px;color:#94a3b8;background:none;border:none;cursor:pointer;}
+.nav-btn.active {color:#8b5cf6;}
+.page {display:none;padding:15px;}
+.page.active {display:block;}
+.btn {background:#8b5cf6;color:white;border:none;padding:12px 20px;border-radius:8px;width:100%;font-weight:bold;cursor:pointer;margin:8px 0;}
+.btn:disabled {background:#475569;}
+.input {width:100%;padding:12px;background:#334155;border:1px solid #475569;border-radius:8px;color:white;margin:8px 0;}
+.task-card {background:#334155;padding:15px;border-radius:10px;margin:10px 0;}
+.withdraw-card {background:#334155;padding:15px;border-radius:10px;margin:10px 0;}
+.ad-box {margin:15px 0;text-align:center;}
+.login-box {padding:30px 20px;}
+.hidden {display:none;}
+.success {color:#22c55e;}
+.error {color:#ef4444;}
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="page active">
+    <div class="header">
+      <h1>Novels NG</h1>
+      <p>Earn Money Reading Novels</p>
+    </div>
+    <div class="login-box">
+      <h2>Login / Register</h2>
+      <input type="email" id="email" class="input" placeholder="Enter Email">
+      <input type="password" id="password" class="input" placeholder="Enter Password">
+      <button class="btn" onclick="login()">Login / Register</button>
+      <p style="font-size:12px;color:#94a3b8;margin-top:10px;">*Any email works. Data saves in your browser</p>
+    </div>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div id="homePage" class="page">
+    <div class="header">
+      <h1>Welcome Back!</h1>
+      <p id="userEmail"></p>
+    </div>
+    <div class="balance-card">
+      <p>Your Balance</p>
+      <div class="balance">₦<span id="balance">0.00</span></div>
+      <p style="font-size:12px;margin-top:5px;">Resets daily at 12:00 AM</p>
+    </div>
+    
+    <!-- ADSTERRA CODE 1 - BANNER -->
+    <div class="ad-box">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '6d57473a29323615f8e72ab9c75bb3f8',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highperformanceformat.com/6d57473a29323615f8e72ab9c75bb3f8/invoke.js"></script>
+    </div>
+
+    <!-- ADSTERRA CODE 2 -->
+    <div class="ad-box">
+      <script src="https://pl30593718.effectivecpmnetwork.com/ea/fd/41/eafd41614812e3258c5965d7ef79ccb0.js"></script>
+    </div>
+
+    <!-- ADSTERRA CODE 3 -->
+    <div class="ad-box">
+      <script src="https://pl30593716.effectivecpmnetwork.com/14/57/d5/1457d57e16c41e8116eab8647b03cef5.js"></script>
+    </div>
+
+    <!-- ADSTERRA CODE 4 - DIRECT LINK -->
+    <div class="ad-box">
+      <a href="https://www.effectivecpmnetwork.com/fgsu8uz4?key=b29b8257cda1793a2dffedf8fea2b14d" target="_blank">
+        <button class="btn" style="background:#22c55e;">Click Ad & Earn More</button>
+      </a>
+    </div>
+
+    <div style="padding:15px;">
+      <h3>Quick Stats</h3>
+      <p>Tasks Done Today: <span id="tasksToday">0</span>/20</p>
+      <p>Next Reset: <span id="nextReset"></span></p>
+    </div>
+  </div>
+
+  <!-- TASK PAGE -->
+  <div id="taskPage" class="page">
+    <div class="header"><h1>Earn Tasks</h1></div>
+    <div style="padding:15px;">
+      <div class="task-card">
+        <h3>Read 1 Chapter</h3>
+        <p>Earn: ₦2,731.03</p>
+        <button class="btn" id="taskBtn" onclick="doTask()">Perform Task</button>
+      </div>
+      <p style="font-size:12px;color:#94a3b8;">Max 20 tasks per day. Resets at 12AM</p>
+      <p style="font-size:12px;color:#22c55e;">Daily Max: ₦54,620.60</p>
+    </div>
+  </div>
+
+  <!-- WITHDRAW PAGE -->
+  <div id="withdrawPage" class="page">
+    <div class="header"><h1>Withdraw</h1></div>
+    <div style="padding:15px;">
+      <div class="balance-card">
+        <p>Available Balance</p>
+        <div class="balance">₦<span id="withdrawBalance">0.00</span></div>
+      </div>
+      
+      <div class="withdraw-card">
+        <h3>Bank Details</h3>
+        <select id="bankName" class="input">
+          <option value="">Select Bank</option>
+          <option value="Access Bank">Access Bank</option>
+          <option value="GTBank">GTBank</option>
+          <option value="First Bank">First Bank</option>
+          <option value="UBA">UBA</option>
+          <option value="Zenith Bank">Zenith Bank</option>
+          <option value="Opay">Opay</option>
+          <option value="Palmpay">Palmpay</option>
+          <option value="Kuda">Kuda</option>
+        </select>
+        <input type="text" id="accountNumber" class="input" placeholder="Account Number" maxlength="10">
+        <input type="text" id="accountName" class="input" placeholder="Account Name">
+        <input type="number" id="withdrawAmount" class="input" placeholder="Amount to Withdraw">
+        <button class="btn" onclick="requestWithdraw()">Request Withdrawal</button>
+        <p id="withdrawMsg"></p>
+        <p style="font-size:12px;color:#94a3b8;">Minimum: ₦140,000</p>
+      </div>
+
+      <h3>Withdrawal History</h3>
+      <div id="withdrawHistory"></div>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div id="profilePage" class="page">
+    <div class="header"><h1>Profile</h1></div>
+    <div style="padding:15px;">
+      <p>Email: <span id="profileEmail"></span></p>
+      <p>Total Earned: ₦<span id="totalEarned">0.00</span></p>
+      <button class="btn" onclick="logout()" style="background:#ef4444;">Logout</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showPage('homePage')">Home</button>
+    <button class="nav-btn" onclick="showPage('taskPage')">Task</button>
+    <button class="nav-btn" onclick="showPage('withdrawPage')">Withdraw</button>
+    <button class="nav-btn" onclick="showPage('profilePage')">Profile</button>
+  </div>
+</div>
+
+<script>
+// DATA STORAGE
+let user = JSON.parse(localStorage.getItem('novelsUser')) || null;
+let data = JSON.parse(localStorage.getItem('novelsData')) || {balance:0, tasksToday:0, lastReset:0, totalEarned:0, withdrawals:[]};
+
+// CHECK 12AM RESET
+function checkReset() {
+  const now = new Date();
+  const today = now.toDateString();
+  if(data.lastReset !== today) {
+    data.tasksToday = 0;
+    data.lastReset = today;
+    saveData();
+  }
+  document.getElementById('nextReset').innerText = '12:00 AM';
+}
+
+// SAVE DATA
+function saveData() {
+  localStorage.setItem('novelsData', JSON.stringify(data));
+  localStorage.setItem('novelsUser', JSON.stringify(user));
+  updateUI();
+}
+
+// UPDATE UI
+function updateUI() {
+  document.getElementById('balance').innerText = data.balance.toFixed(2);
+  document.getElementById('withdrawBalance').innerText = data.balance.toFixed(2);
+  document.getElementById('tasksToday').innerText = data.tasksToday;
+  document.getElementById('totalEarned').innerText = data.totalEarned.toFixed(2);
+  if(user) document.getElementById('userEmail').innerText = user.email;
+  if(user) document.getElementById('profileEmail').innerText = user.email;
+  
+  // Disable task button if 20 reached
+  document.getElementById('taskBtn').disabled = data.tasksToday >= 20;
+  if(data.tasksToday >= 20) document.getElementById('taskBtn').innerText = 'Limit Reached - Come Back 12AM';
+
+  // Show withdrawal history
+  let historyHTML = '';
+  data.withdrawals.slice().reverse().forEach(w => {
+    historyHTML += `<div class="withdraw-card"><p>₦${w.amount.toFixed(2)} - ${w.status}</p><p style="font-size:12px;">${w.bank} - ${w.account}</p><p style="font-size:11px;color:#94a3b8;">${w.date}</p></div>`;
+  });
+  document.getElementById('withdrawHistory').innerHTML = historyHTML || '<p>No withdrawals yet</p>';
+}
+
+// LOGIN
+function login() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  if(!email || !password) return alert('Fill all fields');
+  user = {email};
+  checkReset();
+  saveData();
+  showPage('homePage');
+}
+
+// LOGOUT
+function logout() {
+  user = null;
+  localStorage.removeItem('novelsUser');
+  showPage('loginPage');
+}
+
+// DO TASK
+function doTask() {
+  if(data.tasksToday >= 20) return alert('Daily limit reached. Come back 12AM');
+  data.balance += 2731.03;
+  data.totalEarned += 2731.03;
+  data.tasksToday += 1;
+  saveData();
+  alert('Task Completed! +₦2,731.03 added');
+}
+
+// WITHDRAW
+function requestWithdraw() {
+  const bank = document.getElementById('bankName').value;
+  const account = document.getElementById('accountNumber').value;
+  const name = document.getElementById('accountName').value;
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  const msg = document.getElementById('withdrawMsg');
+
+  if(!bank || !account || !name || !amount) {
+    msg.innerHTML = '<p class="error">Fill all fields</p>'; return;
+  }
+  if(amount < 140000) {
+    msg.innerHTML = '<p class="error">Minimum withdrawal ₦140,000</p>'; return;
+  }
+  if(amount > data.balance) {
+    msg.innerHTML = '<p class="error">Insufficient balance</p>'; return;
+  }
+
+  data.balance -= amount;
+  data.withdrawals.push({amount, bank, account, name, status:'Pending', date:new Date().toLocaleString()});
+  saveData();
+  msg.innerHTML = '<p class="success">Withdrawal request submitted! We go pay you in 24hrs</p>';
+  document.getElementById('withdrawAmount').value = '';
+}
+
+// NAVIGATION
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// AUTO CHECK RESET EVERY MINUTE
+setInterval(checkReset, 60000);
+checkReset();
+if(user) showPage('homePage');
+</script>
+</body>
+</html>
